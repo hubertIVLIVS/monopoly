@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大富翁游戏</title>
+    <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 顶部玩家信息栏 -->
+        <div class="player-info-bar" id="playerInfoBar">
+            <!-- 玩家信息将通过JS动态生成 -->
+        </div>
+
+        <!-- 中间棋盘区域 -->
+        <div class="board-container">
+            <canvas id="gameBoard" width="600" height="600"></canvas>
+            <!-- 棋盘标题（中央偏上） -->
+            <div class="board-title-area">
+                <h2 class="board-title">大富翁</h2>
+            </div>
+            <!-- 棋盘中央操作区（中央偏下） -->
+            <div class="board-center-panel">
+                <div class="dice-area">
+                    <div class="dice" id="dice1">?</div>
+                    <div class="dice" id="dice2">?</div>
+                </div>
+                <div class="action-buttons">
+                    <button id="rollDiceBtn" class="btn btn-primary">掷骰子</button>
+                    <button id="buyPropertyBtn" class="btn btn-success" disabled>购买地产</button>
+                    <button id="buildHouseBtn" class="btn btn-warning" disabled>建造房屋</button>
+                    <button id="sellPropertyBtn" class="btn btn-info" disabled>出售地产</button>
+                    <button id="endTurnBtn" class="btn btn-secondary" disabled>结束回合</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部操作区 -->
+        <div class="control-panel">
+            <!-- 玩家数量选择 -->
+            <div class="player-count-selector" id="playerCountSelector">
+                <label>玩家数量：</label>
+                <div class="player-count-options">
+                    <button class="player-count-btn" data-count="2">2人</button>
+                    <button class="player-count-btn" data-count="3">3人</button>
+                    <button class="player-count-btn active" data-count="4">4人</button>
+                </div>
+            </div>
+
+            <button id="newGameBtn" class="btn btn-danger new-game-btn">新游戏</button>
+
+            <div class="message-log" id="messageLog">
+                <div class="message-item">欢迎来到大富翁游戏！点击"新游戏"开始。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JS文件 -->
+    <script src="js/board.js?v=13"></script>
+    <script src="js/player.js?v=5"></script>
+    <script src="js/dice.js?v=5"></script>
+    <script src="js/card.js?v=6"></script>
+    <script src="js/property.js?v=7"></script>
+    <script src="js/ui.js?v=6"></script>
+    <script src="js/game.js?v=6"></script>
+    <script src="js/main.js?v=5"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "chance": [
+    { "id": 1, "text": "前进到起点，获得200元", "action": "move_to_start", "amount": 200 },
+    { "id": 2, "text": "银行发放红利，获得50元", "action": "gain", "amount": 50 },
+    { "id": 3, "text": "医疗费用，支付100元", "action": "lose", "amount": 100 },
+    { "id": 4, "text": "前进3步", "action": "move_forward", "steps": 3 },
+    { "id": 5, "text": "后退2步", "action": "move_backward", "steps": 2 },
+    { "id": 6, "text": "房屋维修，每栋房子支付25元", "action": "repair_house", "amount": 25 },
+    { "id": 7, "text": "交通罚款，支付15元", "action": "lose", "amount": 15 },
+    { "id": 8, "text": "生日礼物，从每位玩家获得10元", "action": "birthday", "amount": 10 },
+    { "id": 9, "text": "彩票中奖，获得100元", "action": "gain", "amount": 100 },
+    { "id": 10, "text": "进入监狱，无法移动3回合", "action": "go_to_jail" },
+    { "id": 11, "text": "前进到第15格", "action": "move_to", "position": 15 },
+    { "id": 12, "text": "当选董事长，每位玩家支付50元", "action": "chairman", "amount": 50 },
+    { "id": 13, "text": "建筑贷款到期，获得150元", "action": "gain", "amount": 150 },
+    { "id": 14, "text": "考试不及格，罚款50元", "action": "lose", "amount": 50 },
+    { "id": 15, "text": "找到宝藏，获得200元", "action": "gain", "amount": 200 }
+  ],
+  "fate": [
+    { "id": 1, "text": "股票下跌，损失50元", "action": "lose", "amount": 50 },
+    { "id": 2, "text": "继承遗产，获得100元", "action": "gain", "amount": 100 },
+    { "id": 3, "text": "保险到期，支付80元", "action": "lose", "amount": 80 },
+    { "id": 4, "text": "投资成功，获得120元", "action": "gain", "amount": 120 },
+    { "id": 5, "text": "医疗费用，支付60元", "action": "lose", "amount": 60 },
+    { "id": 6, "text": "前进到第20格", "action": "move_to", "position": 20 },
+    { "id": 7, "text": "后退4步", "action": "move_backward", "steps": 4 },
+    { "id": 8, "text": "获得奖金，获得75元", "action": "gain", "amount": 75 },
+    { "id": 9, "text": "罚款，支付40元", "action": "lose", "amount": 40 },
+    { "id": 10, "text": "进入监狱", "action": "go_to_jail" },
+    { "id": 11, "text": "房屋保险到期，支付30元", "action": "lose", "amount": 30 },
+    { "id": 12, "text": "工作奖金，获得90元", "action": "gain", "amount": 90 },
+    { "id": 13, "text": "交通违规，罚款20元", "action": "lose", "amount": 20 },
+    { "id": 14, "text": "前进到第10格", "action": "move_to", "position": 10 },
+    { "id": 15, "text": "幸运之星，获得150元", "action": "gain", "amount": 150 }
+  ]
+}

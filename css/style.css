@@ -1,0 +1,1232 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    max-width: 700px;
+    width: 100%;
+}
+
+/* 玩家信息栏 */
+.player-info-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.player-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 10px;
+    padding: 10px 15px;
+    min-width: 150px;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.player-card.active {
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transform: translateY(-5px);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.6);
+    }
+}
+
+.player-card.bankrupt {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.player-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.player-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.player-money {
+    font-size: 14px;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.player-properties {
+    font-size: 12px;
+    color: #666;
+    margin-top: 3px;
+}
+
+/* 棋盘容器 */
+.board-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#gameBoard {
+    border: 3px solid #333;
+    border-radius: 10px;
+    background: #f0f0f0;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 棋盘标题区域（中央偏上） */
+.board-title-area {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+    pointer-events: none;
+}
+
+.board-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* 棋盘中央操作区（中央偏下） */
+.board-center-panel {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 10;
+    pointer-events: none; /* 让点击穿透到棋盘 */
+}
+
+.board-center-panel > * {
+    pointer-events: auto; /* 按钮和骰子可点击 */
+}
+
+.board-center-panel .dice-area {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px 20px;
+    background: rgba(245, 247, 250, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+}
+
+.board-center-panel .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+}
+
+.board-center-panel .btn {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* 控制面板 */
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.new-game-btn {
+    padding: 12px 40px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dice {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    border: 3px solid #333;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25), inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.dice::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.dice.rolling {
+    animation: roll3d 1s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+@keyframes roll3d {
+    0% { 
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+    }
+    15% {
+        transform: rotateX(180deg) rotateY(90deg) rotateZ(45deg) scale(1.15);
+    }
+    30% { 
+        transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg) scale(1.2);
+    }
+    45% {
+        transform: rotateX(540deg) rotateY(270deg) rotateZ(135deg) scale(1.15);
+    }
+    60% { 
+        transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg) scale(1.1);
+    }
+    75% {
+        transform: rotateX(900deg) rotateY(450deg) rotateZ(225deg) scale(1.05);
+    }
+    90% {
+        transform: rotateX(1080deg) rotateY(540deg) rotateZ(270deg) scale(1.02);
+    }
+    100% { 
+        transform: rotateX(1260deg) rotateY(720deg) rotateZ(360deg) scale(1);
+    }
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(50%);
+    transform: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+}
+
+.message-log {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 13px;
+    scroll-behavior: smooth;
+}
+
+/* 自定义滚动条样式 */
+.message-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.message-log::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.message-log::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.message-log::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.message-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057;
+}
+
+.message-item:last-child {
+    border-bottom: none;
+}
+
+.message-item.highlight {
+    background: #fff3cd;
+    padding: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* 玩家数量选择器 */
+.player-count-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid #e9ecef;
+    margin-top: 8px;
+}
+
+.player-count-selector label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.player-count-options {
+    display: flex;
+    gap: 8px;
+}
+
+.player-count-btn {
+    padding: 6px 18px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+    color: #495057;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.player-count-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+    transform: scale(1.05);
+}
+
+.player-count-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .game-container {
+        padding: 15px;
+        max-width: 100%;
+        border-radius: 15px;
+    }
+    
+    .board-container {
+        width: 100%;
+        overflow: hidden;
+        transform: scale(0.9);
+        transform-origin: center center;
+    }
+    
+    #gameBoard {
+        width: 100%;
+        height: auto;
+        max-width: 100vw;
+    }
+    
+    .player-info-bar {
+        gap: 10px;
+    }
+
+    .player-card {
+        min-width: 110px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .player-name {
+        font-size: 13px;
+    }
+    
+    .player-money {
+        font-size: 11px;
+    }
+
+    .player-properties {
+        font-size: 11px;
+    }
+    
+    .dice-area {
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .dice {
+        width: 55px;
+        height: 55px;
+    }
+
+    .dice svg {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .btn {
+        padding: 10px 18px;
+        font-size: 12px;
+    }
+    
+    .action-buttons {
+        gap: 8px;
+    }
+    
+    .message-log {
+        max-height: 120px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+
+    .game-container {
+        padding: 10px;
+        border-radius: 12px;
+    }
+
+    .board-container {
+        transform: scale(0.75);
+    }
+    
+    .player-info-bar {
+        gap: 8px;
+    }
+
+    .player-card {
+        min-width: 95px;
+        padding: 6px 10px;
+    }
+    
+    .player-name {
+        font-size: 11px;
+    }
+    
+    .player-money {
+        font-size: 10px;
+    }
+
+    .player-properties {
+        font-size: 10px;
+    }
+    
+    .dice-area {
+        gap: 12px;
+        padding: 8px;
+    }
+
+    .dice {
+        width: 50px;
+        height: 50px;
+    }
+
+    .dice svg {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .btn {
+        padding: 8px 14px;
+        font-size: 11px;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 360px) {
+    .board-container {
+        transform: scale(0.65);
+    }
+
+    .dice {
+        width: 45px;
+        height: 45px;
+    }
+
+    .dice svg {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* 对话框样式 */
+.dialog-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* 默认隐藏，JS控制显示 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5); /* 遮罩背景 */
+}
+
+.dialog-container.active {
+    display: flex;
+}
+
+.dialog {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    z-index: 1001;
+}
+
+.dialog-content {
+    padding: 25px;
+}
+
+.dialog-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.dialog-body {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.dialog-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.dialog-footer .btn {
+    min-width: 100px;
+}
+
+/* 地产信息样式 */
+.property-info {
+    text-align: center;
+}
+
+.property-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.property-price,
+.house-cost,
+.current-houses,
+.player-money {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.insufficient-funds {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 过路费信息样式 */
+.rent-info {
+    text-align: center;
+}
+
+.rent-payer {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.rent-property {
+    font-size: 14px;
+    color: #666;
+    margin: 8px 0;
+}
+
+.rent-amount {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-top: 10px;
+}
+
+/* 卡片信息样式 */
+.card-info {
+    text-align: center;
+}
+
+.card-type {
+    font-size: 16px;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.card-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* 卡片覆盖层 */
+.card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.card-overlay.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* 翻牌卡片容器 */
+.flip-card {
+    width: 300px;
+    height: 400px;
+    perspective: 1000px;
+    animation: cardSlideIn 0.5s ease-out;
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-100px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* 卡片正面（背面显示） */
+.flip-card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.flip-card-front.card-chance {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    border: 4px solid #d35400;
+}
+
+.flip-card-front.card-fate {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    border: 4px solid #7d3c98;
+}
+
+.card-icon {
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+.card-label {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 卡片背面（正面显示） */
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+.flip-card-back.card-chance {
+    background: white;
+    border: 4px solid #f39c12;
+}
+
+.flip-card-back.card-fate {
+    background: white;
+    border: 4px solid #9b59b6;
+}
+
+.card-header {
+    padding: 20px;
+    text-align: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.card-header.card-chance {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+}
+
+.card-header.card-fate {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+}
+
+.card-header-icon {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.card-header-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.card-body-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+.card-text-display {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #333;
+    text-align: center;
+    font-weight: 500;
+}
+
+.card-footer-content {
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid #eee;
+}
+
+.card-confirm-btn {
+    padding: 12px 40px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 响应式卡片样式 */
+@media (max-width: 768px) {
+    .flip-card {
+        width: 260px;
+        height: 360px;
+    }
+    
+    .card-icon {
+        font-size: 60px;
+    }
+    
+    .card-label {
+        font-size: 20px;
+    }
+    
+    .card-header-title {
+        font-size: 18px;
+    }
+    
+    .card-text-display {
+        font-size: 16px;
+    }
+}
+
+/* 游戏结束信息样式 */
+.game-over-info {
+    text-align: center;
+}
+
+.winner-name {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.winner-title {
+    font-size: 20px;
+    color: #666;
+}
+
+/* 升级对话框样式 */
+.upgrade-dialog-content {
+    padding: 10px 0;
+}
+
+.upgrade-player-money {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2ecc71;
+    margin-bottom: 15px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.upgrade-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.upgrade-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.upgrade-item:last-child {
+    border-bottom: none;
+}
+
+.upgrade-item:hover:not(.upgrade-item-disabled) {
+    background: #e8f5e9;
+    transform: translateX(3px);
+}
+
+.upgrade-item-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f5f5f5;
+}
+
+.upgrade-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.upgrade-color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.upgrade-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.upgrade-item-center {
+    flex: 0 0 auto;
+    padding: 0 10px;
+}
+
+.upgrade-level {
+    font-size: 12px;
+    color: #667eea;
+    font-weight: bold;
+    background: #eef;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.upgrade-item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex: 1;
+}
+
+.upgrade-rent {
+    font-size: 12px;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.upgrade-cost {
+    font-size: 12px;
+    color: #e67e22;
+}
+
+.upgrade-no-afford {
+    font-size: 11px;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* 出售对话框样式 */
+.sell-dialog-content {
+    padding: 10px 0;
+}
+
+.sell-player-money {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2ecc71;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.sell-tip {
+    font-size: 12px;
+    color: #e67e22;
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 8px;
+    background: #fff3cd;
+    border-radius: 6px;
+}
+
+.sell-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.sell-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sell-item:last-child {
+    border-bottom: none;
+}
+
+.sell-item:hover {
+    background: #fdf0e6;
+    transform: translateX(3px);
+}
+
+.sell-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.sell-color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.sell-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.sell-item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex: 1;
+}
+
+.sell-price {
+    font-size: 14px;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.sell-original {
+    font-size: 11px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* 破产提示样式 */
+.bankrupt-warning {
+    text-align: center;
+    padding: 15px;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.bankrupt-warning-text {
+    color: #856404;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 格子信息对话框样式 */
+.space-info {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.space-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #667eea;
+}
+
+.space-type {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.space-price,
+.space-rent,
+.space-houses,
+.space-owner,
+.space-amount,
+.space-description {
+    font-size: 14px;
+    margin: 8px 0;
+    color: #495057;
+}
+
+.space-price {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.space-rent {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.space-houses {
+    color: #f39c12;
+}
+
+.space-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #495057;
+}
+
+.group-color-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.space-owner {
+    color: #667eea;
+    font-weight: bold;
+    padding: 8px 12px;
+    background: #eef;
+    border-radius: 6px;
+    margin-top: 12px;
+}
+
+.space-owner.unowned {
+    color: #27ae60;
+    background: #e8f5e9;
+}
+
+.space-amount {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.space-description {
+    color: #666;
+    font-style: italic;
+}

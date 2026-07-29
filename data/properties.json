@@ -1,0 +1,55 @@
+{
+  "properties": {
+    "brown": {
+      "color": "#8B4513",
+      "price": 60,
+      "rent": [2, 10, 30, 90, 160, 250],
+      "house_cost": 50,
+      "spaces": [1, 3]
+    },
+    "lightblue": {
+      "color": "#87CEEB",
+      "price": 100,
+      "rent": [4, 20, 60, 180, 320, 450],
+      "house_cost": 50,
+      "spaces": [6, 8, 9]
+    },
+    "pink": {
+      "color": "#FF69B4",
+      "price": 140,
+      "rent": [10, 30, 90, 270, 400, 550],
+      "house_cost": 100,
+      "spaces": [11, 13, 14]
+    },
+    "orange": {
+      "color": "#FFA500",
+      "price": 180,
+      "rent": [14, 70, 200, 550, 750, 950],
+      "house_cost": 100,
+      "spaces": [16, 18, 19]
+    },
+    "red": {
+      "color": "#FF0000",
+      "price": 220,
+      "rent": [18, 90, 250, 700, 875, 1050],
+      "house_cost": 150,
+      "spaces": [21, 23, 24]
+    },
+    "yellow": {
+      "color": "#FFFF00",
+      "price": 260,
+      "rent": [22, 110, 330, 800, 975, 1150],
+      "house_cost": 150,
+      "spaces": [26, 28, 29]
+    }
+  },
+  "railroads": {
+    "price": 200,
+    "rent": [50, 100, 150, 200],
+    "spaces": [5, 25]
+  },
+  "utilities": {
+    "price": 150,
+    "spaces": [12]
+  }
+}
